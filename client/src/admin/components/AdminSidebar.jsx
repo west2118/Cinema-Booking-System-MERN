@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { GiTheater } from "react-icons/gi";
 import { IoLogOutOutline } from "react-icons/io5";
 import { TbUserScreen } from "react-icons/tb";
@@ -17,9 +17,9 @@ const AdminSidebar = () => {
       </div>
 
       <nav className="flex-1 p-4 space-y-2">
-        <Link
+        <NavLink
           to="/admin"
-          className="flex items-center p-3 rounded-lg bg-red-700 cursor-pointer">
+          className="hover:bg-red-700 flex items-center p-3 rounded-lg">
           <svg
             className="w-5 h-5 mr-3"
             fill="none"
@@ -33,7 +33,7 @@ const AdminSidebar = () => {
             />
           </svg>
           <span>Dashboard</span>
-        </Link>
+        </NavLink>
 
         <details className="group">
           <summary className="flex items-center p-3 rounded-lg hover:bg-red-700 cursor-pointer">
@@ -51,17 +51,25 @@ const AdminSidebar = () => {
             </svg>
             <span>Manage Movies</span>
           </summary>
-          <div className="text-white rounded-lg space-y-1">
-            <Link
+          <div className="text-white rounded-lg space-y-1 mt-2">
+            <NavLink
               to="add-movie"
-              className="block py-2 px-4 rounded hover:bg-red-600 font-extralight">
+              className={({ isActive }) =>
+                `block py-2 px-4 rounded font-extralight ${
+                  isActive ? "bg-red-700" : "hover:bg-red-600"
+                }`
+              }>
               Add Movie
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="list-movies"
-              className="block py-2 px-4 rounded hover:bg-red-600 font-extralight">
+              className={({ isActive }) =>
+                `block py-2 px-4 rounded font-extralight ${
+                  isActive ? "bg-red-700" : "hover:bg-red-600"
+                }`
+              }>
               List Movie
-            </Link>
+            </NavLink>
           </div>
         </details>
 
@@ -72,17 +80,25 @@ const AdminSidebar = () => {
             </div>
             <span>Manage Theaters</span>
           </summary>
-          <div className="text-white rounded-lg space-y-1">
-            <Link
+          <div className="text-white rounded-lg space-y-1 mt-2">
+            <NavLink
               to="add-theater"
-              className="block py-2 px-4 rounded hover:bg-red-600 font-extralight">
+              className={({ isActive }) =>
+                `block py-2 px-4 rounded font-extralight ${
+                  isActive ? "bg-red-700" : "hover:bg-red-600"
+                }`
+              }>
               Add Theaters
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="list-theaters"
-              className="block py-2 px-4 rounded hover:bg-red-600 font-extralight">
+              className={({ isActive }) =>
+                `block py-2 px-4 rounded font-extralight ${
+                  isActive ? "bg-red-700" : "hover:bg-red-600"
+                }`
+              }>
               List Theaters
-            </Link>
+            </NavLink>
           </div>
         </details>
 
@@ -93,17 +109,25 @@ const AdminSidebar = () => {
             </div>
             <span>Manage Screens</span>
           </summary>
-          <div className="text-white rounded-lg space-y-1">
-            <Link
+          <div className="text-white rounded-lg space-y-1 mt-2">
+            <NavLink
               to="add-screen"
-              className="block py-2 px-4 rounded hover:bg-red-600 font-extralight">
+              className={({ isActive }) =>
+                `block py-2 px-4 rounded font-extralight ${
+                  isActive ? "bg-red-700" : "hover:bg-red-600"
+                }`
+              }>
               Add Screen
-            </Link>
-            <Link
-              to="list-screen"
-              className="block py-2 px-4 rounded hover:bg-red-600 font-extralight">
+            </NavLink>
+            <NavLink
+              to="list-screens"
+              className={({ isActive }) =>
+                `block py-2 px-4 rounded font-extralight ${
+                  isActive ? "bg-red-700" : "hover:bg-red-600"
+                }`
+              }>
               List Screen
-            </Link>
+            </NavLink>
           </div>
         </details>
 
@@ -123,15 +147,25 @@ const AdminSidebar = () => {
             </svg>
             <span>Manage Showtimes</span>
           </summary>
-          <div className="text-white rounded-lg space-y-1">
-            <Link
+          <div className="text-white rounded-lg space-y-1 mt-2">
+            <NavLink
               to="add-showtime"
-              className="block py-2 px-4 rounded hover:bg-red-600 font-extralight">
+              className={({ isActive }) =>
+                `block py-2 px-4 rounded font-extralight ${
+                  isActive ? "bg-red-700" : "hover:bg-red-600"
+                }`
+              }>
               Add Showtime
-            </Link>
-            <Link className="block py-2 px-4 rounded hover:bg-red-600 font-extralight">
+            </NavLink>
+            <NavLink
+              to="list-showtimes"
+              className={({ isActive }) =>
+                `block py-2 px-4 rounded font-extralight ${
+                  isActive ? "bg-red-700" : "hover:bg-red-600"
+                }`
+              }>
               List Showtimes
-            </Link>
+            </NavLink>
           </div>
         </details>
 

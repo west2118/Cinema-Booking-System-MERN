@@ -7,7 +7,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { toAddMovie, toEditMovie } from "../../../store/movieSlice";
+import { toAddMovie, toEditMovie } from "../../store/movieSlice";
 import ClipLoader from "react-spinners/ClipLoader";
 
 const cloudName = "derc2steu";

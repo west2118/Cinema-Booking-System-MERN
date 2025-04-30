@@ -3,10 +3,10 @@ import { RxCross2 } from "react-icons/rx";
 import { FaRegEdit } from "react-icons/fa";
 import AdminModalRemove from "./AdminModalRemove";
 import { toast } from "react-toastify";
-import { toDeleteTheater } from "../../../store/theaterSlice";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toDeleteTheater } from "../../store/theaterSlice";
 
 const AdminTheaterItem = ({ theater }) => {
   const navigate = useNavigate();

@@ -5,7 +5,7 @@ const postScreen = async (req, res) => {
     const { name, seatingCapacity, screenType, features } = req.body;
 
     const screen = await Screen.findOne({ name });
-    if (!screen) {
+    if (screen) {
       return res.status(400).json({ message: "Screen already exist" });
     }
 

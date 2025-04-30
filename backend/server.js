@@ -10,6 +10,7 @@ const refreshTokenRoutes = require("./routes/refreshToken.routes");
 const movieRoutes = require("./routes/movie.routes");
 const theaterRoutes = require("./routes/theater.routes");
 const screenRoutes = require("./routes/screen.routes");
+const showtimeRoutes = require("./routes/showtime.routes");
 
 app.use(express.json());
 app.use(cors());
@@ -29,3 +30,4 @@ app.use("/api/refreshToken/", refreshTokenRoutes);
 app.use("/api/", movieRoutes);
 app.use("/api/", theaterRoutes);
 app.use("/api/", screenRoutes);
+app.use("/api/", showtimeRoutes);

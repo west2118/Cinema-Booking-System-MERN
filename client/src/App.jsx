@@ -6,7 +6,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import axios from "axios";
-import { fetchAllMovies } from "../store/movieSlice";
 import { useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -30,8 +29,12 @@ import AdminListMovies from "./admin/pages/AdminListMovies";
 import AdminShowtimeData from "./admin/pages/AdminShowtimeData";
 import AdminTheaterData from "./admin/pages/AdminTheaterData";
 import AdminListTheaters from "./admin/pages/AdminListTheaters";
-import { toFetchTheaters } from "../store/theaterSlice";
 import AdminScreenData from "./admin/pages/AdminScreenData";
+import { fetchAllMovies } from "./store/movieSlice";
+import { toFetchTheaters } from "./store/theaterSlice";
+import { toFetchScreens } from "./store/screenSlice";
+import AdminListScreens from "./admin/pages/AdminListScreens";
+import AdminListShowtimes from "./admin/pages/AdminListShowtimes";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -59,14 +62,15 @@ const router = createBrowserRouter(
         <Route path="add-screen" element={<AdminScreenData />} />
         <Route path="list-movies" element={<AdminListMovies />} />
         <Route path="list-theaters" element={<AdminListTheaters />} />
-        <Route path="list-movies" element={<AdminListMovies />} />
+        <Route path="list-screens" element={<AdminListScreens />} />
+        <Route path="list-showtimes" element={<AdminListShowtimes />} />
         <Route
           path="edit-movie/:id"
           element={<AdminMovieData isEdit={true} />}
         />
         <Route
-          path="edit-showtime"
-          element={<AdminShowtimeData isEdit={true} />}
+          path="edit-screen/:id"
+          element={<AdminScreenData isEdit={true} />}
         />
         <Route
           path="edit-theater/:id"
@@ -92,6 +96,11 @@ const App = () => {
           "http://localhost:8080/api/theater"
         );
         dispatch(toFetchTheaters(theaterResponse.data));
+
+        const screenResponse = await axios.get(
+          "http://localhost:8080/api/screen"
+        );
+        dispatch(toFetchScreens(screenResponse.data));
       } catch (error) {
         toast.error(error.response?.data?.message || error.message);
       }

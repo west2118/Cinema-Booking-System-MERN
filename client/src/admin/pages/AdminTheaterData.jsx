@@ -5,7 +5,7 @@ import { amenities } from "../../constants/amenities";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { toAddTheater, toEditTheater } from "../../../store/theaterSlice";
+import { toAddTheater, toEditTheater } from "../../store/theaterSlice";
 
 const cloudName = "derc2steu";
 const uploadPreset = "movie_preset";
@@ -316,16 +316,12 @@ const AdminTheaterData = ({ isEdit = false }) => {
                     value={amenity}
                     checked={selectedAmenities.includes(amenity)}
                     onChange={(e) => {
-                      if (e.target.value) {
-                        setSelectedAmenities((prev) => [
-                          ...prev,
-                          e.target.value,
-                        ]);
-                      } else {
-                        setSelectedAmenities((prev) =>
-                          prev.filter((value) => value !== e.target.value)
-                        );
-                      }
+                      const { checked, value } = e.target;
+                      setSelectedAmenities((prev) =>
+                        checked
+                          ? [...prev, value]
+                          : prev.filter((item) => item !== value)
+                      );
                     }}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />

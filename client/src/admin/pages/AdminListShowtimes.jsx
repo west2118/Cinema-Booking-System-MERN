@@ -41,6 +41,8 @@ const AdminListShowtimes = () => {
     },
   ];
 
+  // TESTING
+
   const statusColors = {
     upcoming: "bg-blue-100 text-blue-800",
     ongoing: "bg-green-100 text-green-800",

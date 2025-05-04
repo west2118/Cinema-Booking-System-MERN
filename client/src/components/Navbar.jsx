@@ -1,7 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaRegUserCircle } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
+  const userId = useSelector((state) => state.storage.userId);
+
   return (
     <header className="flex shadow-md py-4 px-4 sm:px-10 bg-white min-h-[70px] tracking-wide z-50 fixed w-full">
       <div className="flex flex-wrap items-center justify-between gap-5 w-full">
@@ -96,17 +100,25 @@ const Navbar = () => {
           </ul>
         </div>
 
-        <div className="flex max-lg:ml-auto space-x-4">
-          <Link
-            to="login"
-            className="px-4 py-2 text-sm rounded-full font-medium tracking-wide text-slate-900 border border-gray-400 bg-transparent hover:bg-gray-50 transition-all">
-            Login
-          </Link>
-          <Link
-            to="signup"
-            className="px-4 py-2 text-sm rounded-full tracking-wide border bg-red-600 text-white font-medium hover:bg-red-700 transition-all">
-            Sign up
-          </Link>
+        <div className="flex max-lg:ml-auto space-x-4 items-center">
+          {userId ? (
+            <Link to="profile" className="text-2xl">
+              <FaRegUserCircle />
+            </Link>
+          ) : (
+            <>
+              <Link
+                to="login"
+                className="px-4 py-2 text-sm rounded-full font-medium tracking-wide text-slate-900 border border-gray-400 bg-transparent hover:bg-gray-50 transition-all">
+                Login
+              </Link>
+              <Link
+                to="signup"
+                className="px-4 py-2 text-sm rounded-full tracking-wide border bg-red-600 text-white font-medium hover:bg-red-700 transition-all">
+                Sign up
+              </Link>
+            </>
+          )}
 
           <button id="toggleOpen" className="lg:hidden">
             <svg

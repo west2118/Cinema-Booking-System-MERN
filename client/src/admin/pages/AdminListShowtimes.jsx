@@ -1,47 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import AdminShowtimeItem from "../components/AdminShowtimeItem";
 
 const AdminListShowtimes = () => {
-  // Static data for demonstration
-  const showtimes = [
-    {
-      id: 1,
-      movieTitle: "Dune: Part Two",
-      hallName: "Hall A",
-      startTime: "2023-11-15T14:30:00",
-      duration: 166,
-      price: 12.5,
-      bookedSeats: 45,
-      capacity: 120,
-      status: "upcoming",
-      posterUrl: "https://example.com/posters/dune2.jpg",
-    },
-    {
-      id: 2,
-      movieTitle: "The Marvels",
-      hallName: "Hall B",
-      startTime: "2023-11-15T16:45:00",
-      duration: 105,
-      price: 11.0,
-      bookedSeats: 78,
-      capacity: 150,
-      status: "upcoming",
-      posterUrl: "https://example.com/posters/marvels.jpg",
-    },
-    {
-      id: 3,
-      movieTitle: "Oppenheimer",
-      hallName: "Hall C",
-      startTime: "2023-11-15T19:15:00",
-      duration: 180,
-      price: 13.5,
-      bookedSeats: 120,
-      capacity: 200,
-      status: "upcoming",
-      posterUrl: "https://example.com/posters/oppenheimer.jpg",
-    },
-  ];
-
-  // TESTING another commit
+  const showtimes = useSelector((state) => state.showtime.showtimes);
 
   const statusColors = {
     upcoming: "bg-blue-100 text-blue-800",
@@ -147,69 +109,8 @@ const AdminListShowtimes = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {showtimes.map((showtime) => (
-              <tr key={showtime.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0 h-10 w-10">
-                      <img
-                        className="h-10 w-10 rounded-md"
-                        src={showtime.posterUrl}
-                        alt={showtime.movieTitle}
-                      />
-                    </div>
-                    <div className="ml-4">
-                      <div className="text-sm font-medium text-gray-900">
-                        {showtime.movieTitle}
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {showtime.hallName}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {new Date(showtime.startTime).toLocaleString()}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {Math.floor(showtime.duration / 60)}h {showtime.duration % 60}
-                  m
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  ${showtime.price.toFixed(2)}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <div className="w-full bg-gray-200 rounded-full h-2.5">
-                    <div
-                      className="bg-indigo-600 h-2.5 rounded-full"
-                      style={{
-                        width: `${
-                          (showtime.bookedSeats / showtime.capacity) * 100
-                        }%`,
-                      }}></div>
-                  </div>
-                  <span className="text-xs mt-1 block">
-                    {showtime.bookedSeats}/{showtime.capacity} seats
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      statusColors[showtime.status]
-                    }`}>
-                    {showtime.status.charAt(0).toUpperCase() +
-                      showtime.status.slice(1)}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button className="text-indigo-600 hover:text-indigo-900 mr-3">
-                    Edit
-                  </button>
-                  <button className="text-red-600 hover:text-red-900">
-                    Delete
-                  </button>
-                </td>
-              </tr>
+            {showtimes.map((item) => (
+              <AdminShowtimeItem key={item._id} item={item} />
             ))}
           </tbody>
         </table>

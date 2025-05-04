@@ -1,12 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { formatDate } from "../../store/stringDate";
 
 const ComingSoonCard = ({ movie }) => {
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  };
-
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
       <Link to={`/movie/details/${movie._id}`} className="relative">

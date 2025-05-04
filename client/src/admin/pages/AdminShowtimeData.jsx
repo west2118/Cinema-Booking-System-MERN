@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import AdminShowtimeItem from "../components/AdminShowtimeItem";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
+import AdminAddShowtimeTime from "../components/AdminAddShowtimeTime";
 
 const AdminShowtimeData = () => {
   const movies = useSelector((state) => state.movie.movies);
@@ -177,7 +177,7 @@ const AdminShowtimeData = () => {
                 </thead>
                 <tbody>
                   {availableTime.map((time, index) => (
-                    <AdminShowtimeItem
+                    <AdminAddShowtimeTime
                       key={index}
                       time={time}
                       index={index}

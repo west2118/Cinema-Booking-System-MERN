@@ -14,7 +14,7 @@ const ComingSoon = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {movies
           .filter((movie) => new Date(movie.releaseDate) >= new Date())
-          .map((movie) => <ComingSoonCard key={movie.id} movie={movie} />)
+          .map((movie) => <ComingSoonCard key={movie._id} movie={movie} />)
           .slice(0, 4)}
       </div>
     </section>

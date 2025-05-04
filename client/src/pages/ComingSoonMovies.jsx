@@ -19,7 +19,7 @@ const ComingSoonMovies = () => {
           {movies
             .filter((movie) => new Date(movie.releaseDate) >= new Date())
             .map((movie) => (
-              <ComingSoonCard key={movie.id} movie={movie} />
+              <ComingSoonCard key={movie._id} movie={movie} />
             ))}
         </div>
 

@@ -46,4 +46,14 @@ const postShowtime = async (req, res) => {
   }
 };
 
-module.exports = { postShowtime };
+const getShowtimes = async (req, res) => {
+  try {
+    const showtimes = await Showtime.find({});
+
+    if (!showtimes) return;
+
+    res.status(200).json(showtimes);
+  } catch (error) {}
+};
+
+module.exports = { postShowtime, getShowtimes };

@@ -1,9 +1,12 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { authLogin } from "../store/storageSlice";
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -28,6 +31,13 @@ const LoginPage = () => {
 
       console.log(response.data);
 
+      dispatch(
+        authLogin({
+          userId: response.data.userId,
+          accessToken: response.data.accessToken,
+          refreshToken: response.data.refreshToken,
+        })
+      );
       toast.success(response.data.message);
     } catch (error) {
       toast.error(error.response?.data?.message || error.message);

@@ -12,8 +12,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Layout from "./components/Layout";
 import ComingSoonMovies from "./pages/ComingSoonMovies";
 import MoviesPage from "./pages/MoviesPage";
-import TheaterPage from "./pages/TheaterPage";
-import HomePage from "./pages/Homepage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import LoginPage from "./pages/LoginPage";
@@ -35,6 +33,11 @@ import { toFetchTheaters } from "./store/theaterSlice";
 import { toFetchScreens } from "./store/screenSlice";
 import AdminListScreens from "./admin/pages/AdminListScreens";
 import AdminListShowtimes from "./admin/pages/AdminListShowtimes";
+import AddOnPage from "./pages/AddOnPage";
+import TheatersPage from "./pages/TheatersPage";
+import TheaterDetail from "./pages/TheaterDetail";
+import HomePage from "./pages/HomePage";
+import { toFetchShowtimes } from "./store/showtimeSlice";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -43,7 +46,8 @@ const router = createBrowserRouter(
         <Route index element={<HomePage />} />
         <Route path="movies" element={<MoviesPage />} />
         <Route path="coming-soon" element={<ComingSoonMovies />} />
-        <Route path="theaters" element={<TheaterPage />} />
+        <Route path="theaters" element={<TheatersPage />} />
+        <Route path="theater/:id" element={<TheaterDetail />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="contact" element={<ContactPage />} />
         <Route path="login" element={<LoginPage />} />
@@ -52,6 +56,7 @@ const router = createBrowserRouter(
         <Route path="booking/seats" element={<SeatSelection />} />
         <Route path="checkout" element={<CheckoutPage />} />
         <Route path="profile" element={<UserProfilePage />} />
+        <Route path="add-on" element={<AddOnPage />} />
       </Route>
 
       <Route path="/admin" element={<AdminLayout />}>
@@ -101,6 +106,12 @@ const App = () => {
           "http://localhost:8080/api/screen"
         );
         dispatch(toFetchScreens(screenResponse.data));
+
+        const showtimeResponse = await axios.get(
+          "http://localhost:8080/api/showtime"
+        );
+        dispatch(toFetchShowtimes(showtimeResponse.data));
+        console.log(showtimeResponse.data);
       } catch (error) {
         toast.error(error.response?.data?.message || error.message);
       }

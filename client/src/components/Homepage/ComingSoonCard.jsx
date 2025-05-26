@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { formatDate } from "../../store/stringDate";
+import { formatDate } from "../../constants/formatDate";
 
 const ComingSoonCard = ({ movie }) => {
   return (

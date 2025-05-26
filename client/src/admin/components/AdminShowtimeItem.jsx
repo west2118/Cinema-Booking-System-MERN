@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { formatDate } from "../../constants/formatDate";
 
 const AdminShowtimeItem = ({ item }) => {
   const movies = useSelector((state) => state.movie.movies);
@@ -25,28 +26,33 @@ const AdminShowtimeItem = ({ item }) => {
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        hallName
+        {item?.hall}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        startTime
+        {item?.startTime}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        duration
+        {formatDate(item?.date)}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        price
+        {`${Math.floor(movie?.duration / 60)}h ${movie?.duration % 60}m`}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        ₱{item.price}
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         <div className="w-full bg-gray-200 rounded-full h-2.5">
-          {/* <div
-                      className="bg-indigo-600 h-2.5 rounded-full"
-                      style={{
-                        width: `${
-                          (showtime.bookedSeats / showtime.capacity) * 100
-                        }%`,
-                      }}></div> */}
+          <div
+            className="bg-indigo-600 h-2.5 rounded-full"
+            style={{
+              width: `${
+                (item.bookedSeats.length / item.availableSeats) * 100
+              }%`,
+            }}></div>
         </div>
-        <span className="text-xs mt-1 block">bookedSeats/capacity seats</span>
+        <span className="text-xs mt-1 block">
+          {item.bookedSeats.length}/{item.availableSeats}
+        </span>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
         <span

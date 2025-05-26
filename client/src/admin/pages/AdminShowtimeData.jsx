@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
 import AdminAddShowtimeTime from "../components/AdminAddShowtimeTime";
+import { halls } from "../../constants/hall";
 
 const AdminShowtimeData = () => {
   const movies = useSelector((state) => state.movie.movies);
@@ -13,6 +14,7 @@ const AdminShowtimeData = () => {
     movieId: "",
     theaterId: "",
     screenId: "",
+    hall: "",
     date: "",
     price: "",
     availableSeats: "",
@@ -76,7 +78,7 @@ const AdminShowtimeData = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Common Fields (Same for all showtimes) */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Movie Selection */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -134,6 +136,26 @@ const AdminShowtimeData = () => {
                 {screens.map((screen) => (
                   <option key={screen._id} value={screen._id}>
                     {screen.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Cinema Hall
+              </label>
+              <select
+                name="hall"
+                onChange={handleChange}
+                value={formData.hall}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm">
+                <option disabled value="">
+                  -- Select Hall --
+                </option>
+                {halls.map((hall) => (
+                  <option key={hall} value={hall}>
+                    {hall}
                   </option>
                 ))}
               </select>

@@ -64,7 +64,7 @@ const MovieDetails = () => {
           {!isShowing ? (
             <div className="flex gap-4 mb-4">
               <Link
-                to="/booking/seats"
+                to={`/movie/select/${id}`}
                 className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold py-3 px-8 rounded-full text-lg shadow-md transition duration-300 transform hover:scale-105">
                 Book Now
               </Link>

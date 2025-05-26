@@ -21,6 +21,7 @@ const ShowtimeSchema = mongoose.Schema(
       type: Date,
       required: true,
     },
+    hall: { type: String, required: true },
     startTime: { type: String, required: true },
     endTime: { type: String, required: true },
     bookedSeats: [{ type: String }],

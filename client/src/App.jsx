@@ -38,6 +38,9 @@ import TheatersPage from "./pages/TheatersPage";
 import TheaterDetail from "./pages/TheaterDetail";
 import HomePage from "./pages/HomePage";
 import { toFetchShowtimes } from "./store/showtimeSlice";
+import MovieSelectPage from "./pages/MovieShowtimesPage";
+import MovieShowtimesPage from "./pages/MovieShowtimesPage";
+import AdminListBookings from "./admin/pages/AdminListBookings";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -53,14 +56,19 @@ const router = createBrowserRouter(
         <Route path="login" element={<LoginPage />} />
         <Route path="signup" element={<SignUpPage />} />
         <Route path="movie/details/:id" element={<MovieDetails />} />
-        <Route path="booking/seats" element={<SeatSelection />} />
+        <Route path="movie/select/:id" element={<MovieShowtimesPage />} />
         <Route path="checkout" element={<CheckoutPage />} />
         <Route path="profile" element={<UserProfilePage />} />
-        <Route path="add-on" element={<AddOnPage />} />
+        <Route path="/booking">
+          <Route path="seats/:id" element={<SeatSelection />} />
+          <Route path="add-on/" element={<AddOnPage />} />
+          <Route path="checkout" element={<CheckoutPage />} />
+        </Route>
       </Route>
 
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminDashboard />} />
+        <Route path="list-bookings" element={<AdminListBookings />} />
         <Route path="add-movie" element={<AdminMovieData />} />
         <Route path="add-showtime" element={<AdminShowtimeData />} />
         <Route path="add-theater" element={<AdminTheaterData />} />

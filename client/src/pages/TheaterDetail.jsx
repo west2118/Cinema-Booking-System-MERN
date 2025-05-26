@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-import { locations } from "../components/Homepage/TheaterLocations";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Loading from "../components/Loading";
@@ -44,6 +42,7 @@ const TheaterDetail = () => {
       }
 
       grouped[key].showtimes[dateStr].push({
+        showtimeId: show._id,
         time: show.startTime,
         screenType: screen?.screenType,
       });
@@ -59,8 +58,6 @@ const TheaterDetail = () => {
   };
 
   const grouped = groupShowtimes(theaterShowtime);
-
-  console.log("GROUPEDDDDD", grouped);
 
   if (!theaters) {
     return <Loading />;

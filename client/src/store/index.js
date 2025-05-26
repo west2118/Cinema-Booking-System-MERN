@@ -4,6 +4,7 @@ import theaterReducer from "./theaterSlice";
 import screenReducer from "./screenSlice";
 import storageReducer from "./storageSlice";
 import showtimeReducer from "./showtimeSlice";
+import bookingReducer from "./bookingSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     screen: screenReducer,
     storage: storageReducer,
     showtime: showtimeReducer,
+    booking: bookingReducer,
   },
 });
 

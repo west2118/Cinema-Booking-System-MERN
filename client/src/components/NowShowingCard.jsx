@@ -1,28 +1,16 @@
 import React, { useState } from "react";
-import { formatDate } from "../store/stringDate";
+import { groupByScreenType } from "./MovieShowtimeCard";
+import { formatTimeWithIntl } from "../constants/formatIntDate";
+import { useNavigate } from "react-router-dom";
+import { formatDate } from "../constants/formatDate";
 
 const NowShowingCard = ({ item }) => {
+  const navigate = useNavigate();
   const [showAllShowtime, setShowAllShowtime] = useState(false);
 
   const visibleShowtimes = showAllShowtime
     ? item.showtimes
     : item.showtimes.slice(0, 1);
-
-  const groupByScreenType = (showtimes) => {
-    const screenGroups = {};
-
-    showtimes.forEach((showtime) => {
-      const type = showtime.screenType.toLowerCase();
-      if (!screenGroups[type]) {
-        screenGroups[type] = [];
-      }
-      screenGroups[type].push({
-        time: showtime.time,
-      });
-    });
-
-    return screenGroups;
-  };
 
   const getRatingColor = (rating) => {
     switch (rating) {
@@ -52,7 +40,15 @@ const NowShowingCard = ({ item }) => {
         </div>
         <div className="md:w-3/4">
           <div className="flex justify-between items-center">
-            <h3 className="text-xl font-semibold">{item.movieTitle}</h3>
+            <div className="flex gap-2">
+              <p
+                className={`px-0.5 py-1 text-white text-sm ${getRatingColor(
+                  item.rating
+                )}`}>
+                {item.rating}
+              </p>
+              <h3 className="text-xl font-semibold">{item.movieTitle}</h3>
+            </div>
             {item.showtimes.length > 1 && (
               <button
                 onClick={() => setShowAllShowtime(!showAllShowtime)}
@@ -66,47 +62,62 @@ const NowShowingCard = ({ item }) => {
             )}
           </div>
           <div className="flex flex-wrap items-center gap-4 mt-2 text-sm text-gray-600">
-            <span
-              className={`px-4 py-1 rounded-full text-white text-sm ${getRatingColor(
-                item.rating
-              )}`}>
-              {item.rating}
-            </span>
             <span>
               {Math.floor(item.duration / 60)}h {item.duration % 60}m
             </span>
-            {/* <span>{item.screenType.toUpperCase()}</span> */}
           </div>
 
           <div className="mt-4">
-            {visibleShowtimes.map((item) => (
-              <>
-                <h4 className="mb-2 mt-4 text-[#79858E]">
-                  {formatDate(item.date)}
-                </h4>
-                <div className="flex-col flex-wrap gap-y-6">
-                  {Object.entries(groupByScreenType(item.time)).map(
-                    ([screenType, shows]) => (
-                      <div key={screenType} className="mb-4">
-                        <h3 className="font-bold text-lg capitalize mb-2">
-                          {screenType.toUpperCase()}
-                        </h3>
+            {visibleShowtimes
+              .slice()
+              .sort((a, b) => new Date(a.date) - new Date(b.date))
+              .map((item) => (
+                <div key={item.date}>
+                  <h4 className="mb-2 mt-4 text-[#79858E]">
+                    {formatDate(item.date)}
+                  </h4>
+                  <div className="flex flex-col flex-wrap gap-y-4">
+                    {Object.entries(groupByScreenType(item?.time)).map(
+                      ([screenType, shows]) => (
+                        <div key={screenType}>
+                          <h4 className="font-bold text-lg mb-2 text-gray-800 flex items-center gap-2">
+                            <span className="text-gray-500">◆</span>
+                            {screenType.toUpperCase()}
+                          </h4>
+                          <div className="flex flex-wrap gap-2">
+                            {shows
+                              .filter(({ time }) => {
+                                const [hour, minute] = time.split(":");
+                                const showTime = new Date(item.date);
+                                showTime.setHours(hour, minute, 0, 0);
 
-                        <div className="flex flex-wrap gap-2">
-                          {shows.map((show, index) => (
-                            <button
-                              key={index}
-                              className="px-4 py-2 border border-blue-500 text-blue-600 rounded hover:bg-blue-50 transition-colors">
-                              {show.time}
-                            </button>
-                          ))}
+                                const today = new Date();
+                                const isToday =
+                                  new Date(item.date).toDateString() ===
+                                  today.toDateString();
+
+                                return !isToday || showTime > today;
+                              })
+                              .sort((a, b) => a.time.localeCompare(b.time))
+                              .map((show, index) => (
+                                <button
+                                  onClick={() =>
+                                    navigate(
+                                      `/booking/seats/${show.showtimeId}`
+                                    )
+                                  }
+                                  key={index}
+                                  className="px-5 py-3 bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-indigo-300 text-gray-800 rounded-xl font-medium shadow-sm hover:shadow-md transition-all">
+                                  {formatTimeWithIntl(show.time)}
+                                </button>
+                              ))}
+                          </div>
                         </div>
-                      </div>
-                    )
-                  )}
+                      )
+                    )}
+                  </div>
                 </div>
-              </>
-            ))}
+              ))}
           </div>
         </div>
       </div>

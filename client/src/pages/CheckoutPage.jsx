@@ -1,17 +1,30 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { formatDate } from "../constants/formatDate";
+import { formatTimeWithIntl } from "../constants/formatIntDate";
 
 const CheckoutPage = () => {
   // Fake data
-  const movie = {
-    title: "Inception",
-    time: "7:30 PM",
-    date: "June 15, 2023",
-    theater: "Screen 5",
-    seats: ["F5", "F6"],
-    poster: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
-    cover:
-      "http://images2.fanpop.com/image/photos/12300000/Inception-Wallpaper-inception-2010-12396931-1440-900.jpg",
-  };
+  const booked = useSelector((state) => state.booking);
+  const showtimes = useSelector((state) => state.showtime.showtimes);
+  const movies = useSelector((state) => state.movie.movies);
+
+  const showtime = showtimes.find(
+    (showtime) => showtime._id === booked?.selectedShowtimeId
+  );
+
+  const movie = movies.find((movie) => movie._id === showtime?.movieId);
+
+  // const movie = {
+  //   title: "Inception",
+  //   time: "7:30 PM",
+  //   date: "June 15, 2023",
+  //   theater: "Screen 5",
+  //   seats: ["F5", "F6"],
+  //   poster: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
+  //   cover:
+  //     "http://images2.fanpop.com/image/photos/12300000/Inception-Wallpaper-inception-2010-12396931-1440-900.jpg",
+  // };
 
   const pricing = {
     tickets: 2,
@@ -26,7 +39,7 @@ const CheckoutPage = () => {
         <div className="bg-white rounded-lg overflow-hidden shadow-2xl">
           <div
             className="p-6 border-b border-gray-200 relative bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${movie.cover})` }}>
+            style={{ backgroundImage: `url(${movie?.background})` }}>
             <div className="absolute inset-0 bg-black/50 z-0"></div>
 
             <div className="relative z-10">
@@ -37,21 +50,25 @@ const CheckoutPage = () => {
               <div className="flex flex-col sm:flex-row gap-6">
                 <div className="w-24 flex-shrink-0">
                   <img
-                    src={movie.poster}
-                    alt={movie.title}
+                    src={movie?.poster}
+                    alt={movie?.title}
                     className="rounded-lg"
                   />
                 </div>
 
                 <div className="flex-1 text-white">
                   <h3 className="text-lg font-medium text-white">
-                    {movie.title}
+                    {movie?.title}
                   </h3>
                   <div className="mt-2 text-sm text-gray-200">
                     <p>
-                      {movie.theater} • {movie.time} • {movie.date}
+                      {showtime?.hall} •{" "}
+                      {formatTimeWithIntl(showtime?.startTime)} •{" "}
+                      {formatDate(showtime?.date)}
                     </p>
-                    <p className="mt-1">Seats: {movie.seats.join(", ")}</p>
+                    <p className="mt-1">
+                      Seats: {booked.selectedSeats.join(" - ")}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -121,16 +138,21 @@ const CheckoutPage = () => {
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span className="text-gray-600">
-                  Tickets ({pricing.tickets}x)
+                  Tickets ({booked?.selectedSeats.length}x)
                 </span>
                 <span>
-                  ${(pricing.tickets * pricing.ticketPrice).toFixed(2)}
+                  ${(showtime?.price * booked?.selectedSeats.length).toFixed(2)}
                 </span>
               </div>
+              <h1 className="font-semibold">Adds Ons</h1>
 
-              <div className="flex justify-between">
-                <span className="text-gray-600">Convenience Fee</span>
-                <span>${pricing.convenienceFee.toFixed(2)}</span>
+              <div className="flex flex-col gap-y-3">
+                {booked?.addOns.items.map((item) => (
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">{item?.name}</span>
+                    <span>${item?.price?.toFixed(2)}</span>
+                  </div>
+                ))}
               </div>
 
               <div className="flex justify-between">
@@ -143,9 +165,8 @@ const CheckoutPage = () => {
                 <span>
                   $
                   {(
-                    pricing.tickets * pricing.ticketPrice +
-                    pricing.convenienceFee +
-                    pricing.tax
+                    showtime?.price * booked?.selectedSeats.length +
+                    booked?.addOns?.subTotal
                   ).toFixed(2)}
                 </span>
               </div>

@@ -5,6 +5,7 @@ import screenReducer from "./screenSlice";
 import storageReducer from "./storageSlice";
 import showtimeReducer from "./showtimeSlice";
 import bookingReducer from "./bookingSlice";
+import concessionReducer from "./concessionSlice";
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     storage: storageReducer,
     showtime: showtimeReducer,
     booking: bookingReducer,
+    concession: concessionReducer,
   },
 });
 

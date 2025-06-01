@@ -41,6 +41,9 @@ import { toFetchShowtimes } from "./store/showtimeSlice";
 import MovieSelectPage from "./pages/MovieShowtimesPage";
 import MovieShowtimesPage from "./pages/MovieShowtimesPage";
 import AdminListBookings from "./admin/pages/AdminListBookings";
+import AdminListOfConcession from "./admin/pages/AdminListConcession";
+import AdminConcessionData from "./admin/pages/AdminConcessionData";
+import { toFetchConcessions } from "./store/concessionSlice";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -73,10 +76,12 @@ const router = createBrowserRouter(
         <Route path="add-showtime" element={<AdminShowtimeData />} />
         <Route path="add-theater" element={<AdminTheaterData />} />
         <Route path="add-screen" element={<AdminScreenData />} />
+        <Route path="add-concession" element={<AdminConcessionData />} />
         <Route path="list-movies" element={<AdminListMovies />} />
         <Route path="list-theaters" element={<AdminListTheaters />} />
         <Route path="list-screens" element={<AdminListScreens />} />
         <Route path="list-showtimes" element={<AdminListShowtimes />} />
+        <Route path="list-concessions" element={<AdminListOfConcession />} />
         <Route
           path="edit-movie/:id"
           element={<AdminMovieData isEdit={true} />}
@@ -88,6 +93,10 @@ const router = createBrowserRouter(
         <Route
           path="edit-theater/:id"
           element={<AdminTheaterData isEdit={true} />}
+        />
+        <Route
+          path="edit-concession/:id"
+          element={<AdminConcessionData isEdit={true} />}
         />
       </Route>
     </>
@@ -119,7 +128,11 @@ const App = () => {
           "http://localhost:8080/api/showtime"
         );
         dispatch(toFetchShowtimes(showtimeResponse.data));
-        console.log(showtimeResponse.data);
+
+        const concessionResponse = await axios.get(
+          "http://localhost:8080/api/concession"
+        );
+        dispatch(toFetchConcessions(concessionResponse.data));
       } catch (error) {
         toast.error(error.response?.data?.message || error.message);
       }

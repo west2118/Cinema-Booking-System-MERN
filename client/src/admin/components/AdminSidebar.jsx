@@ -39,19 +39,59 @@ const AdminSidebar = () => {
           to="list-bookings"
           className="hover:bg-red-700 flex items-center p-3 rounded-lg">
           <svg
-            className="w-5 h-5 mr-3"
+            className="w-5 h-5 mr-3 flex-shrink-0"
             fill="none"
             stroke="currentColor"
-            viewBox="0 0 24 24">
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth="2"
-              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 3v4m6-4v4M9 12h6M9 16h6"
             />
           </svg>
-          <span>Bookings</span>
+          <span>Manage Bookings</span>
         </NavLink>
+
+        <details className="group">
+          <summary className="flex items-center p-3 rounded-lg hover:bg-red-700 cursor-pointer">
+            <svg
+              className="w-5 h-5 mr-3 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 17H7a2 2 0 01-2-2v-1a1 1 0 011-1h2v-2H6a1 1 0 01-1-1V8a2 2 0 012-2h2m4 0h2a2 2 0 012 2v1a1 1 0 01-1 1h-2v2h2a1 1 0 011 1v1a2 2 0 01-2 2h-2"
+              />
+            </svg>
+            <span>Manage Concessions</span>
+          </summary>
+          <div className="text-white rounded-lg space-y-1 mt-2">
+            <NavLink
+              to="add-concession"
+              className={({ isActive }) =>
+                `block py-2 px-4 rounded font-extralight ${
+                  isActive ? "bg-red-700" : "hover:bg-red-600"
+                }`
+              }>
+              Add Concession
+            </NavLink>
+            <NavLink
+              to="list-concessions"
+              className={({ isActive }) =>
+                `block py-2 px-4 rounded font-extralight ${
+                  isActive ? "bg-red-700" : "hover:bg-red-600"
+                }`
+              }>
+              List Concession
+            </NavLink>
+          </div>
+        </details>
 
         <details className="group">
           <summary className="flex items-center p-3 rounded-lg hover:bg-red-700 cursor-pointer">

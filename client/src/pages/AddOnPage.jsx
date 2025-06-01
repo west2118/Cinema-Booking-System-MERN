@@ -6,25 +6,13 @@ import { addItemToCart, removeItemToCart } from "../store/bookingSlice";
 import { useNavigate } from "react-router-dom";
 
 const AddOnPage = () => {
-  const [items, setItems] = useState([
-    { id: 1, name: "Small Popcorn", price: 5.99, quantity: 0 },
-    { id: 2, name: "Medium Popcorn", price: 7.99, quantity: 0 },
-    { id: 3, name: "Large Popcorn", price: 9.99, quantity: 0 },
-    { id: 4, name: "Small Combo (Popcorn + Drink)", price: 8.99, quantity: 0 },
-    {
-      id: 5,
-      name: "Medium Combo (Popcorn + Drink)",
-      price: 10.99,
-      quantity: 0,
-    },
-    { id: 6, name: "Large Combo (Popcorn + Drink)", price: 12.99, quantity: 0 },
-  ]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const addOns = useSelector((state) => state.booking.addOns);
   const bookedItems = useSelector((state) => state.booking);
   const showtimes = useSelector((state) => state.showtime.showtimes);
   const movies = useSelector((state) => state.movie.movies);
+  const concessions = useSelector((state) => state.concession.concessions);
 
   const showtime = showtimes.find(
     (showtime) => showtime._id === bookedItems.selectedShowtimeId
@@ -33,8 +21,6 @@ const AddOnPage = () => {
   const movie = movies.find((movie) => movie._id === showtime?.movieId);
 
   const totalBookedSeats = bookedItems?.selectedSeats?.length;
-
-  console.log(addOns);
 
   return (
     <div className="pt-[72px] py-12 bg-gradient-to-b from-indigo-50 to-white">
@@ -49,13 +35,13 @@ const AddOnPage = () => {
         </div>
 
         <div className="space-y-4">
-          {items.map((item) => {
-            const itemInCart = addOns.items.find((i) => i.id === item.id);
+          {concessions.map((item) => {
+            const itemInCart = addOns.items.find((i) => i.id === item._id);
             const quantity = itemInCart ? itemInCart.quantity : 0;
 
             return (
               <div
-                key={item.id}
+                key={item._id}
                 className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300">
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-4">
@@ -85,7 +71,7 @@ const AddOnPage = () => {
                   </div>
                   <div className="flex items-center space-x-2">
                     <button
-                      onClick={() => dispatch(removeItemToCart(item.id))}
+                      onClick={() => dispatch(removeItemToCart(item._id))}
                       disabled={quantity === 0}
                       className={`text-3xl transition-colors ${
                         quantity === 0
@@ -102,7 +88,7 @@ const AddOnPage = () => {
                       onClick={() =>
                         dispatch(
                           addItemToCart({
-                            id: item.id,
+                            id: item._id,
                             price: item.price,
                             name: item.name,
                           })
@@ -137,7 +123,7 @@ const AddOnPage = () => {
             <div className="gap-y-2">
               {addOns.items.map((item) => (
                 <div
-                  key={item.id}
+                  key={item._id}
                   className="grid grid-cols-3 items-center py-2">
                   <span className="font-medium text-gray-700 truncate pr-2">
                     {item.name}

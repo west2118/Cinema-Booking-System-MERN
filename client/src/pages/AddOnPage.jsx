@@ -123,7 +123,7 @@ const AddOnPage = () => {
             <div className="gap-y-2">
               {addOns.items.map((item) => (
                 <div
-                  key={item._id}
+                  key={item.id}
                   className="grid grid-cols-3 items-center py-2">
                   <span className="font-medium text-gray-700 truncate pr-2">
                     {item.name}

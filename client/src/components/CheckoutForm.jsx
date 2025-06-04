@@ -7,9 +7,13 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const CheckOutForm = () => {
-  // Fake data
+  const navigate = useNavigate();
+  const userId = useSelector((state) => state.storage.userId);
   const booked = useSelector((state) => state.booking);
   const showtimes = useSelector((state) => state.showtime.showtimes);
   const movies = useSelector((state) => state.movie.movies);
@@ -25,30 +29,51 @@ const CheckOutForm = () => {
 
   const movie = movies.find((movie) => movie._id === showtime?.movieId);
 
+  const totalAmount =
+    showtime?.price * booked?.selectedSeats.length + booked?.addOns?.subTotal;
+
+  const bookingData = {
+    userId,
+    showtimeId: booked?.selectedShowtimeId,
+    ticket: booked?.selectedSeats,
+    ticketPrice: showtime?.price,
+    addOns: booked?.addOns?.items?.map((addOn) => ({
+      id: addOn.id,
+      name: addOn.name,
+      price: addOn.price,
+      quantity: addOn.quantity,
+      totalPrice: addOn.price * addOn.quantity,
+    })),
+    totalAmount,
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!stripe || !elements) {
-      // Stripe.js has not loaded yet.
       return;
     }
 
     setIsProcessing(true);
     setErrorMessage(null);
 
-    const { error } = await stripe.confirmPayment({
+    const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
-      confirmParams: {
-        // Redirect or return URL after payment success
-        return_url: window.location.origin + "/payment-success",
-      },
+      confirmParams: {},
+      redirect: "if_required",
     });
 
-    if (error) {
-      // Show error to your customer (e.g., insufficient funds)
-      setErrorMessage(error.message);
+    console.log(paymentIntent.status);
+
+    if (!error && paymentIntent && paymentIntent.status === "succeeded") {
+      await axios.post(
+        `http://localhost:8080/api/booking/${userId}`,
+        bookingData
+      );
+
+      navigate("/booking/checkout/success-payment");
     } else {
-      // Payment succeeded, your user will be redirected automatically
+      setMessage("An unexpected error occured.");
     }
 
     setIsProcessing(false);
@@ -97,80 +122,81 @@ const CheckOutForm = () => {
           </div>
 
           {/* Payment Details Section */}
-          <div className="p-6 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              Payment Details
-            </h2>
+          <form onSubmit={handleSubmit}>
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                Payment Details
+              </h2>
 
-            <div className="border p-4 rounded-md">
-              <PaymentElement id="payment-element" />
+              <div className="border p-4 rounded-md">
+                <PaymentElement id="payment-element" />
+              </div>
+              {errorMessage && (
+                <div className="text-red-600 mt-2" role="alert">
+                  {errorMessage}
+                </div>
+              )}
             </div>
-            {errorMessage && (
-              <div className="text-red-600 mt-2" role="alert">
-                {errorMessage}
-              </div>
-            )}
-          </div>
 
-          {/* Price Breakdown */}
-          <div className="p-6 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              Price Breakdown
-            </h2>
+            {/* Price Breakdown */}
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                Price Breakdown
+              </h2>
 
-            <div className="space-y-3">
-              <div className="flex justify-between">
-                <span className="text-gray-600">
-                  Tickets({booked?.selectedSeats.length}x)
-                </span>
-                <span>
-                  ${(showtime?.price * booked?.selectedSeats.length).toFixed(2)}
-                </span>
-              </div>
-              <h1 className="font-semibold">Adds Ons</h1>
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">
+                    Tickets({booked?.selectedSeats.length}x)
+                  </span>
+                  <span>
+                    $
+                    {(showtime?.price * booked?.selectedSeats.length).toFixed(
+                      2
+                    )}
+                  </span>
+                </div>
+                <h1 className="font-semibold">Adds Ons</h1>
 
-              <div className="flex flex-col gap-y-3">
-                {booked?.addOns.items.map((item) => (
-                  <div key={item.id} className="flex justify-between">
-                    <span className="text-gray-600">
-                      {item?.name}({item?.quantity}x)
-                    </span>
-                    <span>${(item?.price * item?.quantity).toFixed(2)}</span>
-                  </div>
-                ))}
-              </div>
+                <div className="flex flex-col gap-y-3">
+                  {booked?.addOns.items.map((item) => (
+                    <div key={item.id} className="flex justify-between">
+                      <span className="text-gray-600">
+                        {item?.name}({item?.quantity}x)
+                      </span>
+                      <span>${(item?.price * item?.quantity).toFixed(2)}</span>
+                    </div>
+                  ))}
+                </div>
 
-              <div className="flex justify-between">
-                <span className="text-gray-600">Tax</span>
-                <span>$12</span>
-              </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Tax</span>
+                  <span>$12</span>
+                </div>
 
-              <div className="flex justify-between pt-3 border-t border-gray-200 font-medium text-gray-900">
-                <span>Total</span>
-                <span>
-                  $
-                  {(
-                    showtime?.price * booked?.selectedSeats.length +
-                    booked?.addOns?.subTotal
-                  ).toFixed(2)}
-                </span>
+                <div className="flex justify-between pt-3 border-t border-gray-200 font-medium text-gray-900">
+                  <span>Total</span>
+                  <span>${totalAmount.toFixed(2)}</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Final Actions */}
-          <div className="p-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <button className="px-6 py-3 border border-gray-300 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 w-full sm:w-auto">
-              Back to Seat Selection
-            </button>
+            {/* Final Actions */}
+            <div className="p-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+              <button
+                type="button"
+                className="px-6 py-3 border border-gray-300 rounded-md text-base font-medium text-gray-700 hover:bg-gray-50 w-full sm:w-auto">
+                Back to Seat Selection
+              </button>
 
-            <button
-              type="submit"
-              disabled={!stripe || isProcessing}
-              className="px-6 py-3 bg-blue-600 rounded-md text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 w-full sm:w-auto">
-              {isProcessing ? "Processing..." : "Confirm Payment"}
-            </button>
-          </div>
+              <button
+                type="submit"
+                disabled={!stripe || isProcessing}
+                className="px-6 py-3 bg-blue-600 rounded-md text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 w-full sm:w-auto">
+                {isProcessing ? "Processing..." : "Confirm Payment"}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

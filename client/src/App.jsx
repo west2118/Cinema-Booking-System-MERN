@@ -44,6 +44,7 @@ import AdminListBookings from "./admin/pages/AdminListBookings";
 import AdminListOfConcession from "./admin/pages/AdminListConcession";
 import AdminConcessionData from "./admin/pages/AdminConcessionData";
 import { toFetchConcessions } from "./store/concessionSlice";
+import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -62,6 +63,10 @@ const router = createBrowserRouter(
         <Route path="movie/select/:id" element={<MovieShowtimesPage />} />
         <Route path="checkout" element={<CheckoutPage />} />
         <Route path="profile" element={<UserProfilePage />} />
+        <Route
+          path="/booking/checkout/success-payment"
+          element={<PaymentSuccessPage />}
+        />
         <Route path="/booking">
           <Route path="seats/:id" element={<SeatSelection />} />
           <Route path="add-on/" element={<AddOnPage />} />

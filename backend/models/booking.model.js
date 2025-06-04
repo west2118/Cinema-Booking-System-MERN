@@ -12,20 +12,22 @@ const BookingSchema = mongoose.Schema(
       ref: "Showtime",
       required: true,
     },
-    ticket: [{ type: String, required: true }],
-    ticketPrice: { type: Number, required: trued },
+    ticket: { type: [String], required: true },
+    ticketPrice: { type: Number, required: true },
     addOns: [
       {
+        id: { type: mongoose.Schema.Types.ObjectId, ref: "Concession" },
         name: { type: String, required: true },
         price: { type: Number, required: true },
         quantity: { type: Number, required: true },
+        totalPrice: { type: Number },
       },
     ],
     totalAmount: { type: Number, required: true },
     status: { type: String, required: true },
-    bookingReference: { type: String, required: true },
     paymentStatus: { type: String, required: true },
-    qrCodeUrl: { type: String, required: true },
+    // bookingReference: { type: String, required: true },
+    // qrCodeUrl: { type: String, required: true },
   },
   { timestamps: true }
 );

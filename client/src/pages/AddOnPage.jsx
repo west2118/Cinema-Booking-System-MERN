@@ -48,17 +48,17 @@ const AddOnPage = () => {
                     <div className="relative">
                       <img
                         src="https://media.istockphoto.com/photos/large-bucket-of-popcorn-on-red-picture-id137099651?k=6&m=137099651&s=612x612&w=0&h=TiS0WvXOaeZszKpKBcl8e4c-bNFxaqGKMOHZ2-TrW1U="
-                        className="w-16 h-16 rounded-lg object-cover border-2 border-indigo-100"
+                        className="w-16 h-20 rounded-lg object-cover border-2 border-indigo-100"
                         alt={item.name}
                       />
-                      {item.isCombo && (
-                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                          COMBO
-                        </span>
-                      )}
                     </div>
                     <div>
-                      <h3 className="font-bold text-gray-800">{item.name}</h3>
+                      <p className="text-sm font-light text-gray-500">
+                        Stock: {item.stock}
+                      </p>
+                      <h3 className="font-bold text-gray-800 text-lg">
+                        {item.name}
+                      </h3>
                       <p className="text-indigo-600 font-medium">
                         ${item.price.toFixed(2)}
                       </p>
@@ -85,6 +85,7 @@ const AddOnPage = () => {
                       {quantity}
                     </span>
                     <button
+                      disabled={quantity >= item.stock}
                       onClick={() =>
                         dispatch(
                           addItemToCart({
@@ -94,7 +95,11 @@ const AddOnPage = () => {
                           })
                         )
                       }
-                      className="text-3xl text-blue-600 hover:text-blue-700 transition-colors"
+                      className={`text-3xl transition-colors ${
+                        quantity >= item.stock
+                          ? "text-gray-400 cursor-not-allowed"
+                          : "text-blue-600 hover:text-blue-700"
+                      }`}
                       aria-label={`Increase quantity of ${item.name}`}>
                       <IoIosAddCircleOutline />
                     </button>

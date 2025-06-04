@@ -15,6 +15,7 @@ const theaterRoutes = require("./routes/theater.routes");
 const screenRoutes = require("./routes/screen.routes");
 const showtimeRoutes = require("./routes/showtime.routes");
 const concessionRoutes = require("./routes/concession.routes");
+const bookingRoutes = require("./routes/booking.routes");
 
 app.use(express.json());
 app.use(cors());
@@ -26,12 +27,13 @@ app.get("/config", (req, res) => {
 });
 
 app.post("/create-payment-intent", async (req, res) => {
-  const { amount } = req.body;
-  console.log("Received amount:", amount);
+  let { amount } = req.body;
+
+  amount = Math.round(Number(amount) * 100);
 
   try {
     const paymentIntent = await stripe.paymentIntents.create({
-      currency: "EUR",
+      currency: "php",
       amount,
       automatic_payment_methods: { enabled: true },
     });
@@ -65,3 +67,4 @@ app.use("/api/", theaterRoutes);
 app.use("/api/", screenRoutes);
 app.use("/api/", showtimeRoutes);
 app.use("/api/", concessionRoutes);
+app.use("/api/", bookingRoutes);

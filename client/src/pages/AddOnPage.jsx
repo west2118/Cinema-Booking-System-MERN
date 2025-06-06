@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CiCircleMinus } from "react-icons/ci";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { addItemToCart, removeItemToCart } from "../store/bookingSlice";
+import {
+  addItemToCart,
+  removeItemToCart,
+  resetCart,
+} from "../store/bookingSlice";
 import { useNavigate } from "react-router-dom";
 
 // testing commit
@@ -15,6 +19,10 @@ const AddOnPage = () => {
   const showtimes = useSelector((state) => state.showtime.showtimes);
   const movies = useSelector((state) => state.movie.movies);
   const concessions = useSelector((state) => state.concession.concessions);
+
+  useEffect(() => {
+    dispatch(resetCart());
+  }, []);
 
   const showtime = showtimes.find(
     (showtime) => showtime._id === bookedItems.selectedShowtimeId
@@ -62,7 +70,7 @@ const AddOnPage = () => {
                         {item.name}
                       </h3>
                       <p className="text-indigo-600 font-medium">
-                        ${item.price.toFixed(2)}
+                        ₱{item.price.toFixed(2)}
                       </p>
                       {item.description && (
                         <p className="text-sm text-gray-500 mt-1">
@@ -123,7 +131,7 @@ const AddOnPage = () => {
               <span className="font-bold">{movie?.title}</span>
               <span className="font-bold text-center">{totalBookedSeats}x</span>
               <span className="text-xl font-bold text-right">
-                ${showtime?.price * totalBookedSeats}
+                ₱{showtime?.price * totalBookedSeats}
               </span>
             </div>
 
@@ -139,7 +147,7 @@ const AddOnPage = () => {
                     {item.quantity}x
                   </span>
                   <span className="text-lg font-bold text-indigo-700 text-right">
-                    ${item.totalPrice.toFixed(2)}
+                    ₱{item.totalPrice.toFixed(2)}
                   </span>
                 </div>
               ))}
@@ -153,7 +161,7 @@ const AddOnPage = () => {
               Total Amount:
             </span>
             <span className="text-2xl font-bold text-indigo-700">
-              $
+              ₱
               {(addOns.subTotal + showtime?.price * totalBookedSeats).toFixed(
                 2
               )}

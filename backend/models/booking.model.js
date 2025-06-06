@@ -26,8 +26,8 @@ const BookingSchema = mongoose.Schema(
     totalAmount: { type: Number, required: true },
     status: { type: String, required: true },
     paymentStatus: { type: String, required: true },
-    // bookingReference: { type: String, required: true },
-    // qrCodeUrl: { type: String, required: true },
+    paymentIntentId: { type: String, required: true },
+    isReviewed: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

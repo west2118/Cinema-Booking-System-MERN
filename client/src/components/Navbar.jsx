@@ -30,30 +30,30 @@ const Navbar = () => {
 
           <ul className="lg:flex items-center justify-center gap-x-5 max-lg:space-y-3 max-lg:fixed max-lg:bg-white max-lg:w-1/2 max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:p-6 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50">
             <li>
-              <a href="javascript:void(0)" className="max-sm:hidden">
+              <Link to="/" className="max-sm:hidden">
                 <img
                   src="https://www.pngall.com/wp-content/uploads/2018/06/Cinema-PNG-Image-HD.png"
                   alt="logo"
                   className="w-16"
                 />
-              </a>
-              <a href="javascript:void(0)" className="hidden max-sm:block">
+              </Link>
+              <Link to="/" className="hidden max-sm:block">
                 <img
                   src="https://www.pngall.com/wp-content/uploads/2018/06/Cinema-PNG-Image-HD.png"
                   alt="logo"
                   className="w-9"
                 />
-              </a>
+              </Link>
             </li>
 
             <li className="mb-6 hidden max-lg:block">
-              <a href="javascript:void(0)">
+              <Link to="/">
                 <img
                   src="https://readymadeui.com/readymadeui.svg"
                   alt="logo"
                   className="w-36"
                 />
-              </a>
+              </Link>
             </li>
             <li className="max-lg:border-b max-lg:border-gray-300 max-lg:py-3 px-3">
               <Link

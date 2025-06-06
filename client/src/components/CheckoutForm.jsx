@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { formatDate } from "../constants/formatDate";
 import { formatTimeWithIntl } from "../constants/formatIntDate";
 import {
@@ -10,8 +10,13 @@ import {
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { toEditShowtime } from "../store/showtimeSlice";
+import { resetBooking, toAddBooking } from "../store/bookingSlice";
+import { toUpdateStock } from "../store/concessionSlice";
+import Loading from "./Loading";
 
 const CheckOutForm = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const userId = useSelector((state) => state.storage.userId);
   const booked = useSelector((state) => state.booking);
@@ -33,7 +38,6 @@ const CheckOutForm = () => {
     showtime?.price * booked?.selectedSeats.length + booked?.addOns?.subTotal;
 
   const bookingData = {
-    userId,
     showtimeId: booked?.selectedShowtimeId,
     ticket: booked?.selectedSeats,
     ticketPrice: showtime?.price,
@@ -63,21 +67,38 @@ const CheckOutForm = () => {
       redirect: "if_required",
     });
 
-    console.log(paymentIntent.status);
-
     if (!error && paymentIntent && paymentIntent.status === "succeeded") {
-      await axios.post(
+      const response = await axios.post(
         `http://localhost:8080/api/booking/${userId}`,
-        bookingData
+        { ...bookingData, paymentIntentId: paymentIntent.id }
       );
 
-      navigate("/booking/checkout/success-payment");
+      toast.success(response.data.message);
+
+      dispatch(toAddBooking(response.data.newBooking));
+      dispatch(
+        toEditShowtime({
+          showtimeId: booked?.selectedShowtimeId,
+          updatedData: response.data.updatedShowtime,
+        })
+      );
+      dispatch(
+        toUpdateStock({ updatedConcession: response.data.updatedConcession })
+      );
+      navigate(
+        `/booking/checkout/success-payment/${response.data.newBooking._id}`
+      );
+      dispatch(resetBooking());
     } else {
-      setMessage("An unexpected error occured.");
+      toast.error("An unexpected error occured.");
     }
 
     setIsProcessing(false);
   };
+
+  if (!booked.selectedShowtimeId) {
+    return <Loading />;
+  }
 
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8 pt-[72px]">
@@ -113,7 +134,7 @@ const CheckOutForm = () => {
                       {formatDate(showtime?.date)}
                     </p>
                     <p className="mt-1">
-                      Seats: {booked.selectedSeats.join(" - ")}
+                      Seats: {booked?.selectedSeats?.join(" - ")}
                     </p>
                   </div>
                 </div>
@@ -147,11 +168,11 @@ const CheckOutForm = () => {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="text-gray-600">
-                    Tickets({booked?.selectedSeats.length}x)
+                    Tickets({booked?.selectedSeats?.length}x)
                   </span>
                   <span>
-                    $
-                    {(showtime?.price * booked?.selectedSeats.length).toFixed(
+                    ₱
+                    {(showtime?.price * booked?.selectedSeats?.length).toFixed(
                       2
                     )}
                   </span>
@@ -159,24 +180,24 @@ const CheckOutForm = () => {
                 <h1 className="font-semibold">Adds Ons</h1>
 
                 <div className="flex flex-col gap-y-3">
-                  {booked?.addOns.items.map((item) => (
+                  {booked?.addOns?.items.map((item) => (
                     <div key={item.id} className="flex justify-between">
                       <span className="text-gray-600">
                         {item?.name}({item?.quantity}x)
                       </span>
-                      <span>${(item?.price * item?.quantity).toFixed(2)}</span>
+                      <span>₱{(item?.price * item?.quantity).toFixed(2)}</span>
                     </div>
                   ))}
                 </div>
 
                 <div className="flex justify-between">
                   <span className="text-gray-600">Tax</span>
-                  <span>$12</span>
+                  <span>₱12</span>
                 </div>
 
                 <div className="flex justify-between pt-3 border-t border-gray-200 font-medium text-gray-900">
                   <span>Total</span>
-                  <span>${totalAmount.toFixed(2)}</span>
+                  <span>₱{totalAmount?.toFixed(2)}</span>
                 </div>
               </div>
             </div>

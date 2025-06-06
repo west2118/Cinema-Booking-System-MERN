@@ -229,13 +229,13 @@ const SeatSelection = () => {
                   <p className="font-medium">Tickets</p>
                   <p className="text-center">{selectedSeats?.length}x</p>
                   <p className="text-right">
-                    $<span className="font-medium">{showtime?.price}</span>
+                    ₱<span className="font-medium">{showtime?.price}</span>
                   </p>
                   <hr className="w-full h-[1px] bg-gray-600 border-none col-span-3" />
                   <p className="font-medium">Total</p>
                   <p className="text-center"></p>
                   <p className="text-right">
-                    $
+                    ₱
                     <span className="font-medium">
                       {selectedSeats?.length * showtime?.price}
                     </span>

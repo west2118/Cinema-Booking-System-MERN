@@ -1,6 +1,13 @@
 import React from "react";
+import BookingCard from "../components/BookingCard";
+import { useSelector } from "react-redux";
 
 const UserProfilePage = () => {
+  const userId = useSelector((state) => state.storage.userId);
+  const bookings = useSelector((state) => state.booking.bookings);
+
+  const userBookings = bookings.filter((booking) => booking.userId === userId);
+
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto pt-[70px]">
@@ -27,107 +34,9 @@ const UserProfilePage = () => {
           </h2>
 
           <div className="grid gap-6 md:grid-cols-2">
-            <div className="bg-white shadow rounded-lg overflow-hidden">
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      Dune: Part Two
-                    </h3>
-                    <p className="text-sm text-gray-500">
-                      November 15, 2023 • 7:30 PM
-                    </p>
-                    <p className="text-sm text-gray-500 mt-1">
-                      Screen 5 • Seats: F5, F6
-                    </p>
-                  </div>
-                  <div className="bg-white p-2 rounded border border-gray-200">
-                    <img
-                      src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=BK123456"
-                      alt="QR Code for BK123456"
-                      className="w-20 h-20"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center pt-4 border-t border-gray-200">
-                  <span className="text-sm font-medium text-gray-900">
-                    Booking ID: BK123456
-                  </span>
-                  <button className="px-4 py-2 bg-red-100 text-red-600 rounded-md hover:bg-red-200 text-sm font-medium">
-                    Cancel Booking
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white shadow rounded-lg overflow-hidden">
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      The Marvels
-                    </h3>
-                    <p className="text-sm text-gray-500">
-                      November 20, 2023 • 4:15 PM
-                    </p>
-                    <p className="text-sm text-gray-500 mt-1">
-                      Screen 3 • Seats: H8, H9
-                    </p>
-                  </div>
-                  <div className="bg-white p-2 rounded border border-gray-200">
-                    <img
-                      src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=BK789012"
-                      alt="QR Code for BK789012"
-                      className="w-20 h-20"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center pt-4 border-t border-gray-200">
-                  <span className="text-sm font-medium text-gray-900">
-                    Booking ID: BK789012
-                  </span>
-                  <button className="px-4 py-2 bg-yellow-100 text-yellow-600 rounded-md hover:bg-yellow-200 text-sm font-medium">
-                    Rate
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white shadow rounded-lg overflow-hidden">
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      The Marvels
-                    </h3>
-                    <p className="text-sm text-gray-500">
-                      November 20, 2023 • 4:15 PM
-                    </p>
-                    <p className="text-sm text-gray-500 mt-1">
-                      Screen 3 • Seats: H8, H9
-                    </p>
-                  </div>
-                  <div className="bg-white p-2 rounded border border-gray-200">
-                    <img
-                      src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=BK789012"
-                      alt="QR Code for BK789012"
-                      className="w-20 h-20"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center pt-4 border-t border-gray-200">
-                  <span className="text-sm font-medium text-gray-900">
-                    Booking ID: BK789012
-                  </span>
-                  <span className="text-sm text-gray-500 py-2">
-                    Non-refundable
-                  </span>
-                </div>
-              </div>
-            </div>
+            {userBookings.map((item) => (
+              <BookingCard key={item._id} item={item} />
+            ))}
           </div>
         </div>
 

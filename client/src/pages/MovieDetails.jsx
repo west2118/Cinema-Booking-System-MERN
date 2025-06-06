@@ -94,7 +94,7 @@ const MovieDetails = () => {
             {movie.cast
               .map((actor) => (
                 <div
-                  key={actor.id}
+                  key={actor.artist}
                   className="bg-gray-800 bg-opacity-60 p-3 rounded-lg">
                   <div className="font-bold">{actor.artist}</div>
                   <div className="text-gray-300 text-sm">{actor.name}</div>

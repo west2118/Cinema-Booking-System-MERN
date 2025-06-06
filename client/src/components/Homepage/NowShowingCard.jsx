@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const NowShowingCard = ({ item }) => {
-  console.log("ITEMMM", item);
   return (
     <div className="flex-none w-auto bg-white rounded-lg shadow-md overflow-hidden hover:-translate-y-1 transition-transform">
       <Link to={`/movie/details/${item._id}`}>

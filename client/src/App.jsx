@@ -38,13 +38,14 @@ import TheatersPage from "./pages/TheatersPage";
 import TheaterDetail from "./pages/TheaterDetail";
 import HomePage from "./pages/HomePage";
 import { toFetchShowtimes } from "./store/showtimeSlice";
-import MovieSelectPage from "./pages/MovieShowtimesPage";
 import MovieShowtimesPage from "./pages/MovieShowtimesPage";
-import AdminListBookings from "./admin/pages/AdminListBookings";
 import AdminListOfConcession from "./admin/pages/AdminListConcession";
 import AdminConcessionData from "./admin/pages/AdminConcessionData";
 import { toFetchConcessions } from "./store/concessionSlice";
 import PaymentSuccessPage from "./pages/PaymentSuccessPage";
+import TicketPage from "./pages/TicketPage";
+import { toFetchBookings } from "./store/bookingSlice";
+import AdminListBookings from "./admin/pages/AdminListBookings";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -63,8 +64,9 @@ const router = createBrowserRouter(
         <Route path="movie/select/:id" element={<MovieShowtimesPage />} />
         <Route path="checkout" element={<CheckoutPage />} />
         <Route path="profile" element={<UserProfilePage />} />
+        <Route path="ticket/:id" element={<TicketPage />} />
         <Route
-          path="/booking/checkout/success-payment"
+          path="/booking/checkout/success-payment/:id"
           element={<PaymentSuccessPage />}
         />
         <Route path="/booking">
@@ -138,6 +140,11 @@ const App = () => {
           "http://localhost:8080/api/concession"
         );
         dispatch(toFetchConcessions(concessionResponse.data));
+
+        const bookingResponse = await axios.get(
+          "http://localhost:8080/api/booking"
+        );
+        dispatch(toFetchBookings(bookingResponse.data));
       } catch (error) {
         toast.error(error.response?.data?.message || error.message);
       }

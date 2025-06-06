@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 
 const Footer = () => {
   return (
@@ -6,19 +7,19 @@ const Footer = () => {
       <div className="max-w-screen-xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="lg:flex lg:items-center">
-            <a href="javascript:void(0)">
+            <Link to="/">
               <img
                 src="https://readymadeui.com/readymadeui-light.svg"
                 alt="logo"
                 className="w-48"
               />
-            </a>
+            </Link>
           </div>
 
           <div className="lg:flex lg:items-center">
             <ul className="flex space-x-6">
               <li>
-                <a href="javascript:void(0)">
+                <Link to="/">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="fill-gray-300 hover:fill-white w-7 h-7"
@@ -29,10 +30,10 @@ const Footer = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="javascript:void(0)">
+                <Link to="/">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="fill-gray-300 hover:fill-white w-7 h-7"
@@ -43,10 +44,10 @@ const Footer = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="javascript:void(0)">
+                <Link to="/">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -54,7 +55,7 @@ const Footer = () => {
                     viewBox="0 0 24 24">
                     <path d="M22.92 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.83 4.5 17.72 4 16.46 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98-3.56-.18-6.73-1.89-8.84-4.48-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.9 20.29 6.16 21 8.58 21c7.88 0 12.21-6.54 12.21-12.21 0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z" />
                   </svg>
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -63,25 +64,19 @@ const Footer = () => {
             <h4 className="text-am mb-6 text-white">Useful links</h4>
             <ul className="space-y-4 pl-2">
               <li>
-                <a
-                  href="javascript:void(0)"
-                  className="text-gray-400 hover:text-white text-sm">
+                <Link to="/" className="text-gray-400 hover:text-white text-sm">
                   Featured
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="javascript:void(0)"
-                  className="text-gray-400 hover:text-white text-sm">
+                <Link to="/" className="text-gray-400 hover:text-white text-sm">
                   New Arrivals
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="javascript:void(0)"
-                  className="text-gray-400 hover:text-white text-sm">
+                <Link to="/" className="text-gray-400 hover:text-white text-sm">
                   New Arrivals
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -90,39 +85,29 @@ const Footer = () => {
             <h4 className="text-am mb-6 text-white">Information</h4>
             <ul className="space-y-4 pl-2">
               <li>
-                <a
-                  href="javascript:void(0)"
-                  className="text-gray-400 hover:text-white text-sm">
+                <Link to="/" className="text-gray-400 hover:text-white text-sm">
                   About Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="javascript:void(0)"
-                  className="text-gray-400 hover:text-white text-sm">
+                <Link to="/" className="text-gray-400 hover:text-white text-sm">
                   Terms &amp; Conditions
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="javascript:void(0)"
-                  className="text-gray-400 hover:text-white text-sm">
+                <Link to="/" className="text-gray-400 hover:text-white text-sm">
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="javascript:void(0)"
-                  className="text-gray-400 hover:text-white text-sm">
+                <Link to="/" className="text-gray-400 hover:text-white text-sm">
                   Sale
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="javascript:void(0)"
-                  className="text-gray-400 hover:text-white text-sm">
+                <Link to="/" className="text-gray-400 hover:text-white text-sm">
                   Documentation
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

@@ -30,6 +30,22 @@ const concessionSlice = createSlice({
         (concession) => concession._id !== action.payload
       );
     },
+    toUpdateStock: (state, action) => {
+      const { updatedConcession } = action.payload;
+
+      updatedConcession.forEach((updatedItem) => {
+        const index = state.concessions.findIndex(
+          (concession) => concession._id === updatedItem._id
+        );
+
+        if (index !== -1) {
+          state.concessions[index] = {
+            ...state.concessions[index],
+            stock: updatedItem.stock,
+          };
+        }
+      });
+    },
   },
 });
 
@@ -38,6 +54,7 @@ export const {
   toAddConcession,
   toEditConcession,
   toDeleteConcession,
+  toUpdateStock,
 } = concessionSlice.actions;
 
 export default concessionSlice.reducer;

@@ -62,8 +62,6 @@ const MovieShowtimesPage = () => {
 
   const grouped = groupShowtimes(movieShowtime);
 
-  console.log("GROUPEDDD: ", grouped);
-
   return (
     <div className="pt-[74px]">
       {" "}

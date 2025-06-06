@@ -39,17 +39,25 @@ const BookingCard = ({ item }) => {
               {showtime?.hall} • Seats: {item?.ticket?.join(", ")}
             </p>
           </div>
-          <button
-            className="relative px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg shadow-md hover:shadow-lg transition-all overflow-hidden group"
-            onClick={() => navigate(`/ticket/${item._id}`)}>
-            <span className="relative z-10 font-medium">View Ticket</span>
-            <span className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-            <span className="absolute top-0 left-0 w-full h-0.5 bg-white/30 group-hover:animate-pulse"></span>
-          </button>
+          {item?.status === "Refunded" ? (
+            <div className="relative px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg shadow-md hover:shadow-lg transition-all overflow-hidden group">
+              <span className="relative z-10 font-medium">Refunded</span>
+              <span className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+              <span className="absolute top-0 left-0 w-full h-0.5 bg-white/30 group-hover:animate-pulse"></span>
+            </div>
+          ) : (
+            <button
+              className="relative px-4 py-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg shadow-md hover:shadow-lg transition-all overflow-hidden group"
+              onClick={() => navigate(`/ticket/${item._id}`)}>
+              <span className="relative z-10 font-medium">View Ticket</span>
+              <span className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+              <span className="absolute top-0 left-0 w-full h-0.5 bg-white/30 group-hover:animate-pulse"></span>
+            </button>
+          )}
         </div>
 
         <div className="flex justify-between items-center pt-4 border-t border-gray-200">
-          <span className="text-sm font-medium text-gray-900">
+          <span className="text-sm font-medium text-gray-900 py-2">
             Booking ID: CNM-{item._id}
           </span>
           <BookingActionButtons item={item} showtime={showtime} />

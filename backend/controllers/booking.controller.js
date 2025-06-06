@@ -84,6 +84,70 @@ const postBooking = async (req, res) => {
   }
 };
 
+const refundBooking = async (req, res) => {
+  try {
+    const { showtimeId, ticket, addOns, bookingId } = req.body;
+    const { id } = req.params;
+
+    console.log(showtimeId, ticket, addOns, bookingId);
+    console.log(id);
+
+    const userBooking = await Booking.findOne({ userId: id, _id: bookingId });
+    if (!userBooking) {
+      return res
+        .status(400)
+        .json({ message: `You don't have authorize in this booking` });
+    }
+
+    const updatedBooking = await Booking.findByIdAndUpdate(
+      bookingId,
+      { status: "Refunded" },
+      { new: true }
+    );
+
+    const showtime = await Showtime.findById(showtimeId);
+    if (!showtime) {
+      return res.status(404).json({ message: "Showtime not found" });
+    }
+
+    showtime.bookedSeats = showtime.bookedSeats.filter(
+      (seat) => !ticket.includes(seat)
+    );
+
+    console.log("Before:", showtime.bookedSeats);
+    console.log("Removing ticket:", ticket);
+
+    const updatedShowtime = await showtime.save();
+
+    console.log("After:", showtime.bookedSeats);
+
+    const concessionResults = [];
+
+    for (let addOn of addOns) {
+      const { id: addOnId, quantity } = addOn;
+
+      const concession = await Concession.findById(addOnId);
+      if (!concession) {
+        return res.status(400).json({ message: `Concession not found` });
+      }
+
+      concession.stock += quantity;
+
+      await concession.save();
+      concessionResults.push(concession);
+    }
+
+    res.status(201).json({
+      message: "Refunded Successfully!",
+      updatedBooking,
+      updatedShowtime,
+      updatedConcession: concessionResults,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 const getBooking = async (req, res) => {
   try {
     const booking = await Booking.find({});
@@ -96,4 +160,4 @@ const getBooking = async (req, res) => {
   }
 };
 
-module.exports = { postBooking, getBooking };
+module.exports = { postBooking, getBooking, refundBooking };

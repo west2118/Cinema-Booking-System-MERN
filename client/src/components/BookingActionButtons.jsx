@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import RefundModal from "./RefundModal";
 
 const BookingActionButtons = ({ item, showtime }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [showCancelButton, setShowCancelButton] = useState(false);
   const [canRate, setCanRate] = useState(false);
 
@@ -44,8 +46,10 @@ const BookingActionButtons = ({ item, showtime }) => {
 
   return (
     <>
-      {showCancelButton ? (
-        <button className="px-4 py-2 bg-red-100 text-red-600 rounded-md hover:bg-red-200 text-sm font-medium transition-colors">
+      {showCancelButton && item?.status !== "Refunded" ? (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="px-4 py-2 bg-red-100 text-red-600 rounded-md hover:bg-red-200 text-sm font-medium transition-colors">
           Cancel Booking
         </button>
       ) : canRate && !item.isReviewed ? (
@@ -56,9 +60,17 @@ const BookingActionButtons = ({ item, showtime }) => {
         <button className="px-4 py-2 bg-green-100 text-green-600 rounded-md hover:bg-green-200 text-sm font-medium">
           View Reviewed
         </button>
+      ) : item?.status === "Refunded" ? (
+        <span className="text-sm text-gray-500 py-2"></span>
       ) : (
         <span className="text-sm text-gray-500 py-2">Non-refundable</span>
       )}
+      <RefundModal
+        isOpen={isOpen}
+        isCloseModal={() => setIsOpen(false)}
+        item={item}
+        showtime={showtime}
+      />
     </>
   );
 };

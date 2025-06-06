@@ -50,6 +50,23 @@ app.post("/create-payment-intent", async (req, res) => {
   }
 });
 
+app.post("/refund", async (req, res) => {
+  const { paymentIntentId, amount } = req.body;
+
+  try {
+    const refund = await stripe.refunds.create({
+      payment_intent: paymentIntentId,
+      amount: amount,
+    });
+
+    res
+      .status(200)
+      .json({ success: true, refund, message: "Refund Successfully" });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+});
+
 mongoose
   .connect(process.env.MONGO_URL)
   .then(() => {

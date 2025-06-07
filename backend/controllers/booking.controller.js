@@ -1,6 +1,7 @@
 const Booking = require("../models/booking.model");
 const Concession = require("../models/concession.model");
 const Showtime = require("../models/showtime.model");
+const Movie = require("../models/movie.model");
 
 const postBooking = async (req, res) => {
   try {
@@ -114,12 +115,7 @@ const refundBooking = async (req, res) => {
       (seat) => !ticket.includes(seat)
     );
 
-    console.log("Before:", showtime.bookedSeats);
-    console.log("Removing ticket:", ticket);
-
     const updatedShowtime = await showtime.save();
-
-    console.log("After:", showtime.bookedSeats);
 
     const concessionResults = [];
 
@@ -160,4 +156,53 @@ const getBooking = async (req, res) => {
   }
 };
 
-module.exports = { postBooking, getBooking, refundBooking };
+const rateBooking = async (req, res) => {
+  try {
+    const { bookingId, rating, movieId } = req.body;
+    const { id } = req.params;
+
+    const movie = await Movie.findById(movieId);
+    if (!movie) {
+      return res.status(400).json({ message: `Showtime not found` });
+    }
+
+    const alreadyReviewed = movie.reviews.some(
+      (review) =>
+        review.userId?.toString() === id &&
+        review.bookingId?.toString() === bookingId
+    );
+    if (alreadyReviewed) {
+      return res.status(400).json({ message: `Booked already reviewed` });
+    }
+
+    movie.reviews.push({
+      bookingId,
+      movieId,
+      userId: id,
+      rating,
+    });
+
+    const updatedMovie = await movie.save();
+
+    const booking = await Booking.findById(bookingId);
+    if (!booking) {
+      return res.status(400).json({ message: `Showtime not found` });
+    }
+
+    const updatedBooking = await Booking.findByIdAndUpdate(
+      bookingId,
+      {
+        isReviewed: true,
+      },
+      { new: true }
+    );
+
+    res
+      .status(201)
+      .json({ message: "Rated successfully!", updatedMovie, updatedBooking });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+module.exports = { postBooking, getBooking, refundBooking, rateBooking };

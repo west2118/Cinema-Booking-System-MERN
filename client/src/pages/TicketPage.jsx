@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router";
 import Loading from "../components/Loading";
 import { formatTimeWithIntl } from "../constants/formatIntDate";
 import { formatDate } from "../constants/formatDate";
+import RefundedTicket from "../components/RefundedTicket";
 
 const TicketPage = () => {
   const { id } = useParams();
@@ -22,8 +23,19 @@ const TicketPage = () => {
     (theater) => theater._id === showtime?.theaterId
   );
 
-  if (!booking || !showtime || !movie) {
+  if (!booking || !showtime || !movie || !theater) {
     return <Loading />;
+  }
+
+  if (booking && booking?.status === "Refunded") {
+    return (
+      <RefundedTicket
+        booking={booking}
+        showtime={showtime}
+        movie={movie}
+        theater={theater}
+      />
+    );
   }
 
   return (

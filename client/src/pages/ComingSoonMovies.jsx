@@ -2,9 +2,23 @@ import React from "react";
 import Pagination from "../components/Pagination";
 import ComingSoonCard from "../components/Homepage/ComingSoonCard";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 
 const ComingSoonMovies = () => {
   const movies = useSelector((state) => state.movie.movies);
+  const comingSoonMovies = movies.filter(
+    (movie) => new Date(movie.releaseDate) >= new Date()
+  );
+
+  const itemsPerPage = 15;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(comingSoonMovies.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const comingMovies = comingSoonMovies.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -16,15 +30,17 @@ const ComingSoonMovies = () => {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6">
-          {movies
-            .filter((movie) => new Date(movie.releaseDate) >= new Date())
-            .map((movie) => (
-              <ComingSoonCard key={movie._id} movie={movie} />
-            ))}
+          {comingMovies.map((movie) => (
+            <ComingSoonCard key={movie._id} movie={movie} />
+          ))}
         </div>
 
-        <div className="mt-12">
-          <Pagination />
+        <div className="mt-12 mb-10">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </div>
       </div>
     </div>

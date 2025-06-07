@@ -12,7 +12,7 @@ const NowShowing = () => {
           Currently in Theaters
         </h2>
 
-        <div className="flex gap-8">
+        {/* <div className="flex gap-8">
           <div className="flex items-center gap-2">
             <span className="text-gray-600">Quick filters:</span>
             {["All", "Hindi", "English", "Regional"].map((lang) => (
@@ -31,7 +31,7 @@ const NowShowing = () => {
               <option value="releaseDate">Release Date</option>
             </select>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="flex gap-6 overflow-x-auto scrollbar-thin">

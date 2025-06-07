@@ -1,42 +1,13 @@
 import React, { useEffect, useState } from "react";
-
-const featuredMovies = [
-  {
-    id: 1,
-    title: "Avengers: Endgame",
-    description: "The epic conclusion to the Infinity Saga",
-    imageUrl: "https://www.13377.org/wp-content/uploads/Avengers-Endgame.jpg",
-    ctaText: "Book Now",
-  },
-  {
-    id: 2,
-    title: "Dune: Part Two",
-    description: "The saga continues as Paul Atreides unites with the Fremen",
-    imageUrl:
-      "https://m.media-amazon.com/images/M/MV5BN2QyZGU4ZDctOWMzMy00NTc5LThlOGQtODhmNDI1NmY5YzAwXkEyXkFqcGdeQXVyMDM2NDM2MQ@@._V1_.jpg",
-    ctaText: "Pre-book Now",
-  },
-  {
-    id: 3,
-    title: "The Batman",
-    description: "The Dark Knight of Gotham City begins his war on crime",
-    imageUrl:
-      "https://m.media-amazon.com/images/M/MV5BMDdmMTBiNTYtMDIzNi00NGVlLWIzMDYtZTk3MTQ3NGQxZGEwXkEyXkFqcGdeQXVyMzMwOTU5MDk@._V1_.jpg",
-    ctaText: "Watch Now",
-  },
-  {
-    id: 4,
-    title: "Top Gun: Maverick",
-    description:
-      "After more than thirty years, Maverick is still pushing the envelope",
-    imageUrl:
-      "https://m.media-amazon.com/images/M/MV5BZWYzOGEwNTgtNWU3NS00ZTQ0LWJkODUtMmVhMjIwMjA1ZmQwXkEyXkFqcGdeQXVyMjkwOTAyMDU@._V1_.jpg",
-    ctaText: "Stream Now",
-  },
-];
+import { useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router";
 
 const HeroBanner = () => {
+  const navigate = useNavigate();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const movies = useSelector((state) => state.movie.movies);
+
+  const highlightMovie = movies.slice(0, 4);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -48,29 +19,29 @@ const HeroBanner = () => {
 
   const nextSlide = () => {
     setCurrentSlide((prev) =>
-      prev === featuredMovies.length - 1 ? 0 : prev + 1
+      prev === highlightMovie.length - 1 ? 0 : prev + 1
     );
   };
 
   const prevSlide = () => {
     setCurrentSlide((prev) =>
-      prev === 0 ? featuredMovies.length - 1 : prev - 1
+      prev === 0 ? highlightMovie.length - 1 : prev - 1
     );
   };
 
   return (
-    <div className="relative w-full h-[85vh] overflow-hidden pt-[70px]">
+    <div className="relative w-full h-[80vh] overflow-hidden pt-[70px]">
       <div className="relative w-full h-full overflow-hidden">
         <div
           className="flex transition-transform duration-500 ease-in-out h-full"
           style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
-          {featuredMovies.map((movie) => (
+          {highlightMovie.map((movie) => (
             <div
-              key={movie.id}
+              key={movie._id}
               className="w-full h-full flex-shrink-0 relative">
               <div className="w-full h-full relative">
                 <img
-                  src={movie.imageUrl}
+                  src={movie?.background}
                   className="object-cover w-full h-full"
                   alt=""
                 />
@@ -79,13 +50,15 @@ const HeroBanner = () => {
 
               <div className="absolute top-0 left-0 h-full w-full flex flex-col justify-center items-start text-white px-4 md:px-16 lg:px-24">
                 <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">
-                  {movie.title}
+                  {movie?.title}
                 </h1>
                 <p className="text-lg md:text-xl mb-8 max-w-2xl drop-shadow-md">
-                  {movie.description}
+                  {movie?.overview}
                 </p>
-                <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105">
-                  {movie.ctaText}
+                <button
+                  onClick={() => navigate(`/movie/select/${movie._id}`)}
+                  className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105">
+                  Book Now
                 </button>
               </div>
             </div>
@@ -133,7 +106,7 @@ const HeroBanner = () => {
 
       {/* Indicators */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex space-x-2">
-        {featuredMovies.map((_, index) => (
+        {highlightMovie.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}

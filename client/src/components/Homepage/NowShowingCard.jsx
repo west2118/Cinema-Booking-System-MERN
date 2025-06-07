@@ -1,7 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const NowShowingCard = ({ item }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex-none w-auto bg-white rounded-lg shadow-md overflow-hidden hover:-translate-y-1 transition-transform">
       <Link to={`/movie/details/${item._id}`}>
@@ -15,7 +17,9 @@ const NowShowingCard = ({ item }) => {
       <h3 className="p-3 text-sm font-semibold truncate text-black">
         {item.title}
       </h3>
-      <button className="w-full py-2 bg-red-600 text-white font-medium hover:bg-red-700 transition-colors">
+      <button
+        onClick={() => navigate(`/movie/select/${item._id}`)}
+        className="w-full py-2 bg-red-600 text-white font-medium hover:bg-red-700 transition-colors">
         Book
       </button>
     </div>

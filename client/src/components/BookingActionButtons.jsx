@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import RefundModal from "./RefundModal";
+import RateModal from "./RateModal";
 
-const BookingActionButtons = ({ item, showtime }) => {
+const BookingActionButtons = ({ item, showtime, movie }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showCancelButton, setShowCancelButton] = useState(false);
   const [canRate, setCanRate] = useState(false);
+  const [isOpenReview, setIsOpenReview] = useState(false);
 
   useEffect(() => {
     const targetTime = new Date(item.createdAt);
@@ -52,12 +54,16 @@ const BookingActionButtons = ({ item, showtime }) => {
           className="px-4 py-2 bg-red-100 text-red-600 rounded-md hover:bg-red-200 text-sm font-medium transition-colors">
           Cancel Booking
         </button>
-      ) : canRate && !item.isReviewed ? (
-        <button className="px-4 py-2 bg-yellow-100 text-yellow-600 rounded-md hover:bg-yellow-200 text-sm font-medium">
+      ) : canRate && !item.isReviewed && item?.status !== "Refunded" ? (
+        <button
+          onClick={() => setIsOpenReview(true)}
+          className="px-4 py-2 bg-yellow-100 text-yellow-600 rounded-md hover:bg-yellow-200 text-sm font-medium">
           Rate
         </button>
-      ) : item.isReviewed ? (
-        <button className="px-4 py-2 bg-green-100 text-green-600 rounded-md hover:bg-green-200 text-sm font-medium">
+      ) : item.isReviewed && item?.status !== "Refunded" ? (
+        <button
+          onClick={() => setIsOpenReview(true)}
+          className="px-4 py-2 bg-green-100 text-green-600 rounded-md hover:bg-green-200 text-sm font-medium">
           View Reviewed
         </button>
       ) : item?.status === "Refunded" ? (
@@ -70,6 +76,12 @@ const BookingActionButtons = ({ item, showtime }) => {
         isCloseModal={() => setIsOpen(false)}
         item={item}
         showtime={showtime}
+      />
+      <RateModal
+        isOpen={isOpenReview}
+        item={item}
+        movie={movie}
+        isClose={() => setIsOpenReview(false)}
       />
     </>
   );

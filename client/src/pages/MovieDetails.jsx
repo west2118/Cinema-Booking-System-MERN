@@ -33,7 +33,7 @@ const MovieDetails = () => {
           <img
             src={movie.poster}
             alt={movie.title}
-            className="w-full rounded-lg shadow-2xl"
+            className="w-full max-h-[550px] rounded-lg shadow-2xl"
           />
         </div>
 

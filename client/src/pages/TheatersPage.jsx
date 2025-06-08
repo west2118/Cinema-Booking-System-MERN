@@ -8,12 +8,23 @@ const TheaterListPage = () => {
   const navigate = useNavigate();
   const theaters = useSelector((state) => state.theater.theaters);
 
-  const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const totalPages = Math.ceil(theaters.length / itemsPerPage);
+  const filteredTheaters = theaters.filter((theater) =>
+    `${theater?.name} ${theater?.location?.address}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
+
+  const itemsPerPage = 10;
+
+  const totalPages = Math.ceil(filteredTheaters.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const pageTheaters = theaters.slice(startIndex, startIndex + itemsPerPage);
+  const pageTheaters = filteredTheaters.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
 
   return (
     <div className="pt-[72px]">
@@ -44,6 +55,10 @@ const TheaterListPage = () => {
               <input
                 type="text"
                 placeholder="Search by location or cinema..."
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="w-full py-4 px-6 rounded-full bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-red-700 pr-16"
               />
               <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-red-700 hover:bg-red-800 text-white font-bold py-2 px-6 rounded-full transition-all">
@@ -144,11 +159,13 @@ const TheaterListPage = () => {
           </div>
 
           <div className="mt-12 mb-6">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
+            {pageTheaters.length > 0 && (
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            )}
           </div>
         </main>
       </div>

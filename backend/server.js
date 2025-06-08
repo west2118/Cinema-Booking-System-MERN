@@ -16,6 +16,7 @@ const screenRoutes = require("./routes/screen.routes");
 const showtimeRoutes = require("./routes/showtime.routes");
 const concessionRoutes = require("./routes/concession.routes");
 const bookingRoutes = require("./routes/booking.routes");
+const userRoutes = require("./routes/user.routes");
 
 app.use(express.json());
 app.use(cors());
@@ -85,3 +86,4 @@ app.use("/api/", screenRoutes);
 app.use("/api/", showtimeRoutes);
 app.use("/api/", concessionRoutes);
 app.use("/api/", bookingRoutes);
+app.use("/api/", userRoutes);

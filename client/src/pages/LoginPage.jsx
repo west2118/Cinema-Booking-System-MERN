@@ -1,11 +1,12 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { authLogin } from "../store/storageSlice";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
@@ -39,6 +40,7 @@ const LoginPage = () => {
         })
       );
       toast.success(response.data.message);
+      navigate("/");
     } catch (error) {
       toast.error(error.response?.data?.message || error.message);
     }

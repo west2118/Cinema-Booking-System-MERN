@@ -22,7 +22,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <li
         onClick={() => onPageChange(Math.max(1, currentPage - 1))}
         className="w-9 h-9 flex items-center justify-center cursor-pointer rounded border border-gray-300 hover:border-red-400 transition-all duration-200 group">
-        <span className="text-white group-hover:text-red-600 transition-colors">
+        <span className="text-gray-300 group-hover:text-red-600 transition-colors">
           &lt;
         </span>
       </li>
@@ -45,7 +45,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <li
         onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
         className="w-9 h-9 flex items-center justify-center cursor-pointer rounded border border-gray-300 hover:border-red-400 transition-all duration-200 group">
-        <span className="text-white group-hover:text-red-600 transition-colors">
+        <span className="text-gray-300 group-hover:text-red-600 transition-colors">
           &gt;
         </span>
       </li>

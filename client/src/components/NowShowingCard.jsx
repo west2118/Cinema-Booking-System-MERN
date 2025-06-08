@@ -10,7 +10,9 @@ const NowShowingCard = ({ item }) => {
 
   const visibleShowtimes = showAllShowtime
     ? item.showtimes
-    : item.showtimes.slice(0, 1);
+    : item.showtimes
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
+        .slice(0, 1);
 
   const getRatingColor = (rating) => {
     switch (rating) {

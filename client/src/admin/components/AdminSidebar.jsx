@@ -1,10 +1,20 @@
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { GiTheater } from "react-icons/gi";
 import { IoLogOutOutline } from "react-icons/io5";
 import { TbUserScreen } from "react-icons/tb";
+import { useDispatch } from "react-redux";
+import { authLogout } from "../../store/storageSlice";
 
 const AdminSidebar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(authLogout());
+    navigate("/login");
+  };
+
   return (
     <div className="w-64 bg-red-800 text-white flex flex-col min-h-screen max-h-screen overflow-auto scrollbar-hidden">
       <div className="p-4 border-b border-red-700 flex items-center gap-2">
@@ -52,6 +62,25 @@ const AdminSidebar = () => {
             />
           </svg>
           <span>Manage Bookings</span>
+        </NavLink>
+
+        <NavLink
+          to="list-users"
+          className="hover:bg-red-700 flex items-center p-3 rounded-lg">
+          <svg
+            className="w-5 h-5 mr-3 flex-shrink-0"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 3v4m6-4v4M9 12h6M9 16h6"
+            />
+          </svg>
+          <span>Manage Users</span>
         </NavLink>
 
         <details className="group">
@@ -256,7 +285,7 @@ const AdminSidebar = () => {
               <p className="text-xs text-red-200">admin@cineplex.com</p>
             </div>
           </div>
-          <button className="text-3xl">
+          <button onClick={handleLogout} className="text-3xl">
             <IoLogOutOutline />
           </button>
         </div>

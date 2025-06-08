@@ -2,6 +2,7 @@ import React from "react";
 import MovieShowtimeCard from "../components/MovieShowtimeCard";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import NoShowing from "../components/NoShowing";
 
 const MovieShowtimesPage = () => {
   const { id } = useParams();
@@ -172,9 +173,13 @@ const MovieShowtimesPage = () => {
             {`${movie?.title.toUpperCase()} MOVIE SHOWTIMES`}
           </h2>
 
-          {grouped.map((item) => (
-            <MovieShowtimeCard key={item._id} item={item} />
-          ))}
+          {grouped.length >= 1 ? (
+            grouped.map((item) => (
+              <MovieShowtimeCard key={item._id} item={item} />
+            ))
+          ) : (
+            <NoShowing />
+          )}
         </div>
       </div>
     </div>

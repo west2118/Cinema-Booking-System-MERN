@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Loading from "../components/Loading";
 import NowShowingCard from "../components/NowShowingCard";
+import NoShowing from "../components/NoShowing";
 
 const TheaterDetail = () => {
   const { id } = useParams();
@@ -12,7 +13,10 @@ const TheaterDetail = () => {
 
   const theater = theaters.find((theater) => theater?._id === id);
   const theaterShowtime = showtimes.filter(
-    (showtime) => showtime.theaterId === id
+    (showtime) =>
+      showtime.theaterId === id &&
+      new Date(showtime.date).toISOString().split("T")[0] >=
+        new Date().toISOString().split("T")[0]
   );
 
   const groupShowtimes = (showtimes) => {
@@ -122,9 +126,13 @@ const TheaterDetail = () => {
               <h2 className="text-2xl font-bold mb-6">Now Showing</h2>
 
               <div className="space-y-6">
-                {grouped.map((item) => (
-                  <NowShowingCard key={item._id} item={item} />
-                ))}
+                {grouped.length >= 1 ? (
+                  grouped.map((item) => (
+                    <NowShowingCard key={item._id} item={item} />
+                  ))
+                ) : (
+                  <NoShowing />
+                )}
               </div>
             </div>
           </div>

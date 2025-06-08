@@ -46,6 +46,8 @@ import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 import TicketPage from "./pages/TicketPage";
 import { toFetchBookings } from "./store/bookingSlice";
 import AdminListBookings from "./admin/pages/AdminListBookings";
+import AdminListUsers from "./admin/pages/AdminListUsers";
+import { toFetchUsers } from "./store/userSlice";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -78,17 +80,18 @@ const router = createBrowserRouter(
 
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminDashboard />} />
-        <Route path="list-bookings" element={<AdminListBookings />} />
         <Route path="add-movie" element={<AdminMovieData />} />
         <Route path="add-showtime" element={<AdminShowtimeData />} />
         <Route path="add-theater" element={<AdminTheaterData />} />
         <Route path="add-screen" element={<AdminScreenData />} />
         <Route path="add-concession" element={<AdminConcessionData />} />
+        <Route path="list-bookings" element={<AdminListBookings />} />
         <Route path="list-movies" element={<AdminListMovies />} />
         <Route path="list-theaters" element={<AdminListTheaters />} />
         <Route path="list-screens" element={<AdminListScreens />} />
         <Route path="list-showtimes" element={<AdminListShowtimes />} />
         <Route path="list-concessions" element={<AdminListOfConcession />} />
+        <Route path="list-users" element={<AdminListUsers />} />
         <Route
           path="edit-movie/:id"
           element={<AdminMovieData isEdit={true} />}
@@ -145,6 +148,9 @@ const App = () => {
           "http://localhost:8080/api/booking"
         );
         dispatch(toFetchBookings(bookingResponse.data));
+
+        const userResponse = await axios.get("http://localhost:8080/api/user");
+        dispatch(toFetchUsers(userResponse.data));
       } catch (error) {
         toast.error(error.response?.data?.message || error.message);
       }
